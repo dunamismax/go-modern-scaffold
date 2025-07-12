@@ -2,15 +2,15 @@
 // versions:
 //   sqlc v1.29.0
 
-package database
+package db
 
 import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-type Note struct {
-	ID        int32              `json:"id"`
-	Content   string             `json:"content"`
+type Message struct {
+	ID        int64              `json:"id"`
+	Body      string             `json:"body"`
 	CreatedAt pgtype.Timestamptz `json:"created_at"`
 	UpdatedAt pgtype.Timestamptz `json:"updated_at"`
 }

@@ -10,28 +10,27 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: "1.24"
-          cache: true
-
+          go-version: "1.22"
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
-
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+      - name: Install Mage
+        run: go install github.com/magefile/mage@latest
       - name: Install Dependencies
-        run: |
-          go install github.com/magefile/mage@latest
-          mage install
-
-      - name: Run All Checks
-        run: mage check:all
-
+        run: go run github.com/magefile/mage@latest deps
+      - name: Run Checks
+        run: go run github.com/magefile/mage@latest check:all
       - name: Build
-        run: mage build:all
+        run: go run github.com/magefile/mage@latest build:all

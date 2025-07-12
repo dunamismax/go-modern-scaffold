@@ -1,17 +1,29 @@
 {
   "name": "go-modern-scaffold",
   "version": "1.0.0",
-  "description": "Modern web application scaffold with Go, Templ, Tailwind CSS, HTMX, and Alpine.js",
+  "description": "A modern web application scaffold for Go.",
+  "main": "index.js",
   "scripts": {
-    "build:css": "tailwindcss -i ./internal/web/assets/css/app.css -o ./public/css/app.css --minify",
-    "dev:css": "tailwindcss -i ./internal/web/assets/css/app.css -o ./public/css/app.css --watch"
+    "css:build": "tailwindcss -i ./internal/web/styles.css -o ./public/css/app.css",
+    "css:watch": "tailwindcss -i ./internal/web/styles.css -o ./public/css/app.css --watch",
+    "format": "prettier --write ."
+  },
+  "keywords": [
+    "go",
+    "tailwind",
+    "htmx",
+    "templ",
+    "fiber"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "daisyui": "^4.12.10",
+    "tailwindcss": "^3.4.4"
   },
   "devDependencies": {
-    "tailwindcss": "^3.4.4",
-    "prettier": "^3.3.2"
-  },
-  "dependencies": {
-    "alpinejs": "^3.14.1",
-    "htmx.org": "^2.0.0"
+    "animate.css": "^4.1.1",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.6.14"
   }
 }
