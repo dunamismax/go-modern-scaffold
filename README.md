@@ -68,9 +68,9 @@ This frontend architecture is designed for building modern, animated user experi
 
 This backend is built for developer productivity and robust performance, leveraging a high-speed web framework and best-in-class libraries for logging, configuration, and validation.
 
-- [**Fiber**](https://docs.gofiber.io/)
+- [**Echo**](https://echo.labstack.com/docs)
   - **Role:** High-Performance Web Framework.
-  - **Description:** An Express.js-inspired web framework built on top of Fasthttp, Go's fastest HTTP engine. It is designed for high-performance and zero memory allocation, providing a developer-friendly API for building APIs and web services rapidly.
+  - **Description:** A high-performance, extensible, and minimalist web framework for Go. It features a highly optimized HTTP router with no dynamic memory allocation and offers robust capabilities for building scalable and secure RESTful APIs.
 - [**slog**](https://pkg.go.dev/log/slog)
   - **Role:** Structured, Level-Based Logging.
   - **Description:** The official structured logging package in Go's standard library. It enables the creation of machine-readable, key-value pair logs with severity levels, which is essential for effective parsing, filtering, and analysis in modern observability platforms.
@@ -79,7 +79,7 @@ This backend is built for developer productivity and robust performance, leverag
   - **Description:** A comprehensive configuration solution for Go applications. Viper can manage configuration from various sources—including YAML, JSON, and TOML files, environment variables, and remote key-value stores—unifying them into a single, accessible interface.
 - [**Validator**](https://pkg.go.dev/github.com/go-playground/validator/v10)
   - **Role:** Struct-Tag Based Data Validation.
-  - **Description:** The de-facto standard for data validation in Go. It enables declarative validation on struct fields using simple tags (e.g., `validate:"required,email"`), integrating seamlessly with frameworks like Fiber to ensure data integrity.
+  - **Description:** The de-facto standard for data validation in Go. It enables declarative validation on struct fields using simple tags (e.g., `validate:"required,email"`), integrating seamlessly with frameworks like Echo to ensure data integrity.
 
 ---
 
@@ -99,22 +99,25 @@ For building polished and modern command-line applications, the [**Charm Bracele
 
 ---
 
-### **Database & Caching: Type-Safe, Performant & Scalable**
+### **Database & Caching: Fast, Embedded & Type-Safe**
 
-This data layer is optimized for performance and maintainability by pairing direct SQL control with generated, type-safe Go code and a modern, declarative schema migration tool.
+This data layer is built around SQLite for simplicity, performance, and portability. It combines a modern Go driver with generated, type-safe Go code and a pure-Go migration tool for a robust and maintainable data persistence strategy.
 
+- [**SQLite**](https://www.sqlite.org/index.html)
+  - **Role:** Embedded SQL Database Engine.
+  - **Description:** A C-language library that implements a small, fast, self-contained, high-reliability, full-featured, SQL database engine. SQLite is the most used database engine in the world, perfect for applications that need portability, reliability, and simplicity without the overhead of a separate server process.
+- [**modernc.org/sqlite**](https://pkg.go.dev/modernc.org/sqlite)
+  - **Role:** Pure Go SQLite Driver.
+  - **Description:** A pure Go SQLite driver that is a great choice for modern Go applications as it doesn't require CGo, which simplifies cross-compilation and deployment. It provides a reliable interface between your Go application and the SQLite database through the standard `database/sql` package.
 - [**sqlc**](https://docs.sqlc.dev/)
   - **Role:** Type-Safe SQL Code Generation.
-  - **Description:** Generates fully type-safe, idiomatic Go code from your SQL schema and queries. This allows you to write raw SQL for maximum control and performance while benefiting from compile-time safety, eliminating an entire class of runtime database errors.
-- [**Atlas**](https://atlasgo.io/)
+  - **Description:** Generates fully type-safe, idiomatic Go code from your SQL schema and queries. This allows you to write raw SQL for maximum control and performance against your SQLite database while benefiting from compile-time safety, eliminating an entire class of runtime database errors.
+- [**Goose**](https://github.com/pressly/goose)
   - **Role:** Database Schema Migrations.
-  - **Description:** A modern, language-agnostic tool for managing and migrating database schemas. Atlas can automatically generate migration plans by comparing the desired schema (defined in HCL, SQL, or ORM) to the database's current state, streamlining schema evolution with a declarative workflow.
+  - **Description:** A powerful, database-agnostic migration tool that lets you manage your database's schema evolution using SQL or Go functions. It operates with a simple CLI and tracks migration history, making it straightforward to apply, roll back, and verify schema changes in a sequential, version-controlled manner.
 - [**Ristretto**](https://github.com/dgraph-io/ristretto)
   - **Role:** High-Performance In-Process Cache.
-  - **Description:** A fast, concurrent, and memory-bounded in-process cache from Dgraph. It is designed to achieve high hit ratios with low memory overhead, making it an excellent choice for performance-critical caching within a single application instance.
-- [**go-redis**](https://redis.io/docs/clients/go/)
-  - **Role:** Redis Client for Distributed Caching.
-  - **Description:** The premier Go client for Redis, providing a high-performance interface for all Redis features. It is essential for implementing a distributed cache, which is critical for scaling applications that require shared state or session management.
+  - **Description:** A fast, concurrent, and memory-bounded in-process cache from Dgraph. It is designed to achieve high hit ratios with low memory overhead, making it an excellent choice for reducing read latency on frequently accessed data without adding external dependencies.
 
 ---
 
@@ -160,7 +163,10 @@ This stack relies exclusively on Go's powerful, built-in testing framework to en
 - **Go 1.22+**
 - **Node.js & npm**
 - **Mage**
-- **Docker**
+- **Goose**: `go install github.com/pressly/goose/v3/cmd/goose@latest`
+
+**Note on Hardcoded Paths:**
+Some Mage commands (e.g., `mage dev`, `mage db:migrate`) use hardcoded paths to Go binaries like `air` and `goose` (e.g., `/Users/sawyer/go/bin/air`). If you encounter `executable file not found` errors, you may need to adjust these paths in `magefile.go` to match your local Go binary installation directory (typically `$GOPATH/bin`).
 
 ### Installation & Usage
 
@@ -185,21 +191,14 @@ This stack relies exclusively on Go's powerful, built-in testing framework to en
    cp .env.example .env
    ```
 
-4. **Start the Database:**
-   This command starts the PostgreSQL database container using Docker.
-
-   ```bash
-   mage docker:up
-   ```
-
-5. **Run Migrations:**
+4. **Run Migrations:**
    This command applies all pending database migrations.
 
    ```bash
    mage db:migrate
    ```
 
-6. **Run the Development Server:**
+5. **Run the Development Server:**
    This is the primary command for local development. It starts the web server with live reloading and watches for CSS changes.
 
    ```bash
@@ -221,8 +220,6 @@ This stack relies exclusively on Go's powerful, built-in testing framework to en
 - `mage format`: Automatically formats all Go and frontend code.
 - `mage build:all`: Builds all application binaries for the current platform.
 - `mage release:all`: Cross-compiles release binaries for all platforms.
-- `mage docker:up`: Starts the Docker containers for the database.
-- `mage docker:down`: Stops the Docker containers.
 
 ### Individual Commands
 
@@ -241,10 +238,6 @@ This stack relies exclusively on Go's powerful, built-in testing framework to en
   - `mage check:vuln`: Scans for known vulnerabilities.
 - **Database (`db:`)**
   - `mage db:migrate`: Applies all pending database migrations.
-- **Docker (`docker:`)**
-  - `mage docker:up`: Starts the Docker containers.
-  - `mage docker:down`: Stops the Docker containers.
-  - `mage docker:logs`: Tails the logs of the Docker containers.
 - **Housekeeping**
   - `mage clean`: Removes all build artifacts and generated files.
   - `mage tidy`: Tidies the `go.mod` and `go.sum` files.
@@ -261,7 +254,7 @@ This stack relies exclusively on Go's powerful, built-in testing framework to en
   - **`cache/`**: Ristretto and Redis caching logic.
   - **`config/`**: Viper configuration management.
   - **`db/`**: Database connection logic, sqlc queries, and models.
-    - **`migrations/`**: Atlas schema migrations.
+    - **`migrations/`**: Goose schema migrations.
   - **`web/`**: Fiber handlers, Templ components, and CSS styles.
 - **`public/`**: Compiled, publicly-served static assets (CSS, JS).
 - **`magefile.go`**: The build script for the project, written in Go.

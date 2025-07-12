@@ -25,16 +25,16 @@ var (
 	goTest    = sh.RunCmd(goCmd, "test")
 	goTidy    = sh.RunCmd(goCmd, "mod", "tidy")
 	goInstall = sh.RunCmd(goCmd, "install")
+	goVet     = sh.RunCmd(goCmd, "vet")
+	goFmt     = sh.RunCmd(goCmd, "fmt")
 
 	// Other tools
-	airCmd          = "air"
-	templCmd        = "templ"
-	sqlcCmd         = "sqlc"
-	atlasCmd        = "atlas"
-	golangciLintCmd = "golangci-lint"
-	npmCmd          = "npm"
-	dockerCmd       = "docker"
-)
+	airCmd    = "air"
+	templCmd  = "templ"
+	sqlcCmd   = "sqlc"
+	
+	npmCmd    = "npm"
+	)
 
 // ldflags returns the linker flags for building the binaries.
 func ldflags() string {
@@ -50,7 +50,7 @@ func Dev() error {
 	mg.SerialDeps(Generate.All, Build.All)
 	fmt.Println("Starting server with live reload and watching for CSS changes...")
 	go sh.Run(npmCmd, "run", "css:watch")
-	return sh.Run(airCmd)
+	return sh.Run("/Users/sawyer/go/bin/air", "-c", ".air.toml")
 }
 
 // -----------------------------------------------------------------------------
@@ -85,7 +85,7 @@ type Generate mg.Namespace
 
 // All runs all code generators.
 func (Generate) All() error {
-	mg.SerialDeps(Generate.CSS, Generate.Templ, Generate.SQLC)
+	mg.SerialDeps(Generate.CSS, Generate.Templ, Generate.SQLC, Tidy)
 	return nil
 }
 
@@ -109,7 +109,11 @@ func (Generate) SQLC() error {
 
 // Format runs all code formatters.
 func Format() error {
-	fmt.Println("Formatting code...")
+	fmt.Println("Formatting Go code...")
+	if err := goFmt("./..."); err != nil {
+		return err
+	}
+	fmt.Println("Formatting npm packages...")
 	return sh.Run(npmCmd, "run", "format")
 }
 
@@ -119,10 +123,10 @@ func Format() error {
 
 type DB mg.Namespace
 
-// Migrate runs database migrations using Atlas.
+// Migrate runs database migrations using Goose.
 func (DB) Migrate() error {
 	fmt.Println("Running database migrations...")
-	return sh.Run(atlasCmd, "migrate", "apply", "--env", "local")
+	return sh.Run("/Users/sawyer/go/bin/goose", "-dir", "db/migrations", "sqlite3", "./app.db", "up")
 }
 
 // -----------------------------------------------------------------------------
@@ -139,8 +143,8 @@ func (Check) All() error {
 
 // Lint runs the linter.
 func (Check) Lint() error {
-	fmt.Println("Running linter...")
-	return sh.Run(golangciLintCmd, "run", "./...")
+	fmt.Println("Running go vet...")
+	return goVet("./...")
 }
 
 // Test runs all unit tests.
@@ -161,7 +165,12 @@ func (Check) Cover() error {
 // Vuln scans for vulnerabilities.
 func (Check) Vuln() error {
 	fmt.Println("Scanning for vulnerabilities...")
-	return sh.Run("govulncheck", "./...")
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		return err
+	}
+	govulncheckPath := filepath.Join(homeDir, "go", "bin", "govulncheck")
+	return sh.Run(govulncheckPath, "./...")
 }
 
 // -----------------------------------------------------------------------------
@@ -213,29 +222,7 @@ func release(goos, goarch string) error {
 	return sh.RunWith(env, goCmd, "build", "-ldflags", ldflags(), "-o", cliOut, "./cmd/cli")
 }
 
-// -----------------------------------------------------------------------------
-// Docker Targets
-// -----------------------------------------------------------------------------
 
-type Docker mg.Namespace
-
-// Up starts the Docker containers.
-func (Docker) Up() error {
-	fmt.Println("Starting Docker containers...")
-	return sh.Run(dockerCmd, "compose", "up", "-d")
-}
-
-// Down stops the Docker containers.
-func (Docker) Down() error {
-	fmt.Println("Stopping Docker containers...")
-	return sh.Run(dockerCmd, "compose", "down")
-}
-
-// Logs tails the logs of the Docker containers.
-func (Docker) Logs() error {
-	fmt.Println("Tailing Docker logs...")
-	return sh.Run(dockerCmd, "compose", "logs", "-f")
-}
 
 // -----------------------------------------------------------------------------
 // Housekeeping & Dependency Management
@@ -268,9 +255,6 @@ func Deps() error {
 		return err
 	}
 	if err := goInstall("ariga.io/atlas/cmd/atlas@latest"); err != nil {
-		return err
-	}
-	if err := goInstall("github.com/golangci/golangci-lint/cmd/golangci-lint@latest"); err != nil {
 		return err
 	}
 	if err := goInstall("golang.org/x/vuln/cmd/govulncheck@latest"); err != nil {

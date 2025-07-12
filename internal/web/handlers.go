@@ -3,12 +3,12 @@ package web
 import (
 	"context"
 	"log/slog"
+	"net/http"
 
 	"github.com/a-h/templ"
 	"github.com/dunamismax/go-modern-scaffold/internal/cache"
 	"github.com/dunamismax/go-modern-scaffold/internal/db"
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/adaptor"
+	"github.com/labstack/echo/v4"
 )
 
 const messagesCacheKey = "messages"
@@ -25,12 +25,12 @@ func NewHandlers(queries db.Querier, cache *cache.Cache) *Handlers {
 }
 
 // RenderIndex renders the main index page.
-func (h *Handlers) RenderIndex(c *fiber.Ctx) error {
+func (h *Handlers) RenderIndex(c echo.Context) error {
 	// Try to get messages from cache first
 	if cachedMessages, found := h.cache.Get(messagesCacheKey); found {
 		if messages, ok := cachedMessages.([]db.Message); ok {
 			slog.Info("cache hit for messages")
-			return adaptor.HTTPHandler(templ.Handler(Index(messages)))(c)
+			return renderComponent(c, Index(messages))
 		}
 	}
 
@@ -39,26 +39,26 @@ func (h *Handlers) RenderIndex(c *fiber.Ctx) error {
 	messages, err := h.queries.GetMessages(context.Background())
 	if err != nil {
 		slog.Error("failed to get messages", "error", err)
-		return fiber.ErrInternalServerError
+		return echo.NewHTTPError(http.StatusInternalServerError, "Failed to get messages")
 	}
 
 	// Set messages in cache
 	h.cache.Set(messagesCacheKey, messages, 1)
 
-	return adaptor.HTTPHandler(templ.Handler(Index(messages)))(c)
+	return renderComponent(c, Index(messages))
 }
 
 // CreateMessage handles the creation of a new message.
-func (h *Handlers) CreateMessage(c *fiber.Ctx) error {
+func (h *Handlers) CreateMessage(c echo.Context) error {
 	body := c.FormValue("body")
 	if body == "" {
-		return fiber.NewError(fiber.StatusBadRequest, "message body cannot be empty")
+		return echo.NewHTTPError(http.StatusBadRequest, "Message body cannot be empty")
 	}
 
-	_, err := h.queries.CreateMessage(context.Background(), body)
+	err := h.queries.CreateMessage(context.Background(), body)
 	if err != nil {
 		slog.Error("failed to create message", "error", err)
-		return fiber.ErrInternalServerError
+		return echo.NewHTTPError(http.StatusInternalServerError, "Failed to create message")
 	}
 
 	// Invalidate cache
@@ -68,9 +68,14 @@ func (h *Handlers) CreateMessage(c *fiber.Ctx) error {
 	messages, err := h.queries.GetMessages(context.Background())
 	if err != nil {
 		slog.Error("failed to get messages after creating new one", "error", err)
-		return fiber.ErrInternalServerError
+		return echo.NewHTTPError(http.StatusInternalServerError, "Failed to get messages")
 	}
 
 	// This is where HTMX shines. We just render the component that needs updating.
-	return adaptor.HTTPHandler(templ.Handler(MessageList(messages)))(c)
+	return renderComponent(c, MessageList(messages))
+}
+
+// renderComponent is a helper to render a templ component.
+func renderComponent(c echo.Context, component templ.Component) error {
+	return component.Render(c.Request().Context(), c.Response().Writer)
 }

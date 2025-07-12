@@ -36,7 +36,7 @@ templ MessageList(messages []db.Message) {
 	for _, msg := range messages {
 		<div class="p-4 mb-2 bg-base-200 rounded-lg shadow animate__animated animate__fadeInUp">
 			<p>{ msg.Body }</p>
-			<small class="text-xs text-gray-500">{ msg.CreatedAt.Time.Format("Jan 02, 2006 15:04:05") }</small>
+			<small class="text-xs text-gray-500">{ msg.CreatedAt.Format("Jan 02, 2006 15:04:05") }</small>
 		</div>
 	}
 }

@@ -94,7 +94,7 @@ func Layout() templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<!doctype html><html lang=\"en\" data-theme=\"dracula\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Go Modern Scaffold</title><link href=\"/css/app.css\" rel=\"stylesheet\"><script src=\"https://unpkg.com/htmx.org@1.9.12\" integrity=\"sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyR0HVaxHXKCUApmAq/7Hwclc/\" crossorigin=\"anonymous\"></script><script src=\"https://unpkg.com/hyperscript.org@0.9.12\"></script></head><body class=\"bg-base-100 text-base-content\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<!doctype html><html lang=\"en\" data-theme=\"dracula\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Go Modern Scaffold</title><link href=\"/css/app.css\" rel=\"stylesheet\"><script src=\"https://unpkg.com/htmx.org@1.9.12\" integrity=\"sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyR0HVaxHXKCUApmAq/7Hwclc/\" crossorigin=\"anonymous\"></script><script src=\"https://unpkg.com/hyperscript.org@0.9.12\"></script><script src=\"https://unpkg.com/htmx.org/dist/ext/class-tools.js\"></script></head><body class=\"bg-base-100 text-base-content\" hx-ext=\"class-tools\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -132,14 +132,14 @@ func MessageList(messages []db.Message) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		for _, msg := range messages {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<div class=\"p-4 mb-2 bg-base-200 rounded-lg shadow\"><p>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<div class=\"p-4 mb-2 bg-base-200 rounded-lg shadow animate__animated animate__fadeInUp\"><p>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(msg.Body)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/components.templ`, Line: 37, Col: 16}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/components.templ`, Line: 38, Col: 16}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -150,9 +150,9 @@ func MessageList(messages []db.Message) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var6 string
-			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(msg.CreatedAt.Time.Format("Jan 02, 2006 15:04:05"))
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(msg.CreatedAt.Format("Jan 02, 2006 15:04:05"))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/components.templ`, Line: 38, Col: 92}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/web/components.templ`, Line: 39, Col: 87}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -188,7 +188,7 @@ func MessageForm() templ.Component {
 			templ_7745c5c3_Var7 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<form hx-post=\"/messages\" hx-target=\"#message-list\" hx-swap=\"innerHTML\" _=\"on htmx:afterRequest reset() me\" class=\"mt-4\"><div class=\"form-control\"><textarea name=\"body\" class=\"textarea textarea-bordered\" placeholder=\"Enter your message...\"></textarea></div><button type=\"submit\" class=\"btn btn-primary mt-2\">Post Message</button></form>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<form hx-post=\"/messages\" hx-target=\"#message-list\" hx-swap=\"innerHTML\" hx-indicator=\"#spinner\" _=\"on htmx:afterRequest reset() me\" class=\"mt-4\"><div class=\"form-control\"><textarea name=\"body\" class=\"textarea textarea-bordered\" placeholder=\"Enter your message...\"></textarea></div><button type=\"submit\" class=\"btn btn-primary mt-2\" hx-disable-on-request>Post Message <span id=\"spinner\" class=\"htmx-indicator loading loading-spinner\"></span></button></form>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

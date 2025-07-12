@@ -1,8 +1,12 @@
+-- +goose Up
 -- Create "messages" table
 CREATE TABLE "messages" (
-  "id" bigserial NOT NULL,
-  "body" text NOT NULL,
-  "created_at" timestamptz NOT NULL DEFAULT (now()),
-  "updated_at" timestamptz NOT NULL DEFAULT (now()),
-  PRIMARY KEY ("id")
+  "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+  "body" TEXT NOT NULL,
+  "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updated_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+-- +goose Down
+-- Drop "messages" table
+DROP TABLE "messages";

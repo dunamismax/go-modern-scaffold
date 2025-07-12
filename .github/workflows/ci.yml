@@ -26,11 +26,22 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
-      - name: Install Mage
-        run: go install github.com/magefile/mage@latest
+      - name: Cache npm dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Install Dependencies
         run: go run github.com/magefile/mage@latest deps
-      - name: Run Checks
-        run: go run github.com/magefile/mage@latest check:all
+      - name: Run Linter
+        run: go run github.com/magefile/mage@latest check:lint
+      - name: Run Formatter
+        run: go run github.com/magefile/mage@latest format
+      - name: Run Tests
+        run: go run github.com/magefile/mage@latest check:test
+      - name: Run Vulnerability Scan
+        run: go run github.com/magefile/mage@latest check:vuln
       - name: Build
         run: go run github.com/magefile/mage@latest build:all

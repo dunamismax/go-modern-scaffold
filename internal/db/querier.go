@@ -9,7 +9,7 @@ import (
 )
 
 type Querier interface {
-	CreateMessage(ctx context.Context, body string) (Message, error)
+	CreateMessage(ctx context.Context, body string) error
 	GetMessages(ctx context.Context) ([]Message, error)
 }
 

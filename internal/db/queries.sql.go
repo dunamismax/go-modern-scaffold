@@ -9,20 +9,13 @@ import (
 	"context"
 )
 
-const createMessage = `-- name: CreateMessage :one
-INSERT INTO messages (body) VALUES ($1) RETURNING id, body, created_at, updated_at
+const createMessage = `-- name: CreateMessage :exec
+INSERT INTO messages (body) VALUES (?)
 `
 
-func (q *Queries) CreateMessage(ctx context.Context, body string) (Message, error) {
-	row := q.db.QueryRow(ctx, createMessage, body)
-	var i Message
-	err := row.Scan(
-		&i.ID,
-		&i.Body,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-	)
-	return i, err
+func (q *Queries) CreateMessage(ctx context.Context, body string) error {
+	_, err := q.exec(ctx, q.createMessageStmt, createMessage, body)
+	return err
 }
 
 const getMessages = `-- name: GetMessages :many
@@ -30,7 +23,7 @@ SELECT id, body, created_at, updated_at FROM messages ORDER BY created_at DESC
 `
 
 func (q *Queries) GetMessages(ctx context.Context) ([]Message, error) {
-	rows, err := q.db.Query(ctx, getMessages)
+	rows, err := q.query(ctx, q.getMessagesStmt, getMessages)
 	if err != nil {
 		return nil, err
 	}
@@ -47,6 +40,9 @@ func (q *Queries) GetMessages(ctx context.Context) ([]Message, error) {
 			return nil, err
 		}
 		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err

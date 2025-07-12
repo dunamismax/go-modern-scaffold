@@ -1,31 +1,30 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log/slog"
+	"net/http"
 	"os"
-	"time"
 
 	"github.com/dunamismax/go-modern-scaffold/internal/cache"
 	"github.com/dunamismax/go-modern-scaffold/internal/config"
 	"github.com/dunamismax/go-modern-scaffold/internal/db"
 	"github.com/dunamismax/go-modern-scaffold/internal/web"
 	"github.com/go-playground/validator/v10"
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/gofiber/fiber/v2/middleware/recover"
-	"github.com/jackc/pgx/v5/pgxpool"
+	"database/sql"
+	_ "github.com/mattn/go-sqlite3"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
-// XValidator provides a custom validator for Fiber.
-type XValidator struct {
+// CustomValidator holds the validator instance.
+type CustomValidator struct {
 	validator *validator.Validate
 }
 
-// Validate performs validation on a struct.
-func (v *XValidator) Validate(data interface{}) error {
-	return v.validator.Struct(data)
+// Validate implements the echo.Validator interface.
+func (v *CustomValidator) Validate(i interface{}) error {
+	return v.validator.Struct(i)
 }
 
 func main() {
@@ -40,22 +39,16 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Setup database connection pool
-	pool, err := pgxpool.New(context.Background(), cfg.DBURL)
+	// Setup database connection
+	dbConn, err := sql.Open("sqlite3", cfg.DBURL)
 	if err != nil {
 		log.Error("failed to connect to database", "error", err)
 		os.Exit(1)
 	}
-	defer pool.Close()
-
-	if err := pool.Ping(context.Background()); err != nil {
-		log.Error("failed to ping database", "error", err)
-		os.Exit(1)
-	}
-	log.Info("successfully connected to the database")
+	defer dbConn.Close()
 
 	// Create a new sqlc querier
-	queries := db.New(pool)
+	queries := db.New(dbConn)
 
 	// Create a new cache
 	appCache, err := cache.New(&cfg.Cache)
@@ -64,40 +57,33 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Create Fiber app
-	app := fiber.New(fiber.Config{
-		AppName:      "go-modern-scaffold",
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 10 * time.Second,
-		IdleTimeout:  120 * time.Second,
-	})
-
-	// Set custom validator
-	app.Validator = &XValidator{validator: validator.New()}
+	// Create Echo app
+	e := echo.New()
+	e.Validator = &CustomValidator{validator: validator.New()}
 
 	// Add middleware
-	app.Use(recover.New())
-	app.Use(logger.New())
+	e.Use(middleware.Recover())
+	e.Use(middleware.Logger())
 
 	// Static files
-	app.Static("/css", "./public/css")
-	app.Static("/js", "./public/js")
-	app.Static("/assets", "./public/assets")
+	e.Static("/css", "./public/css")
+	e.Static("/js", "./public/js")
+	e.Static("/assets", "./public/assets")
 
 	// Create web handlers
 	webHandlers := web.NewHandlers(queries, appCache)
 
 	// Register routes
-	app.Get("/", webHandlers.RenderIndex)
-	app.Post("/messages", webHandlers.CreateMessage)
-	app.Get("/health", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{"status": "ok"})
+	e.GET("/", webHandlers.RenderIndex)
+	e.POST("/messages", webHandlers.CreateMessage)
+	e.GET("/health", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, map[string]string{"status": "ok"})
 	})
 
 	// Start server
 	listenAddr := fmt.Sprintf(":%d", cfg.HTTPPort)
 	log.Info("starting server", "address", listenAddr)
-	if err := app.Listen(listenAddr); err != nil {
+	if err := e.Start(listenAddr); err != nil {
 		log.Error("failed to start server", "error", err)
 		os.Exit(1)
 	}

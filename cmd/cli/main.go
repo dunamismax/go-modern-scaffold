@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"strings"
+	"time"
 
 	"github.com/charmbracelet/bubbles/spinner"
 	"github.com/charmbracelet/bubbles/textinput"
@@ -62,7 +64,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.sent = false
 				// Here you would typically send the message to the server.
 				// For this example, we'll just simulate a network request.
-				return m, tea.Tick(1*1e9, func(t tea.Time) tea.Msg {
+				return m, tea.Tick(1*time.Second, func(t time.Time) tea.Msg {
 					return "message sent"
 				})
 			}
