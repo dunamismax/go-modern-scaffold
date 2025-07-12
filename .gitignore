@@ -1,26 +1,50 @@
-# Binaries
-/bin
-/bin/*
-
-# Local development
-.env
-/data/
-*.db
-*.db-journal
-
-# Node
-/node_modules
-npm-debug.log
-
 # Go
-vendor/
+# -----------------------------------------------------------------------------
+# Compiled binaries and build artifacts
+/bin
+/release
+
+# Dependency management
+/vendor/
+
+# Local environment configuration
+.env
+.env.*
+!.env.example
+
+# Log files
 *.log
 
-# OS-specific
-.DS_Store
-Thumbs.db
+# Test and coverage reports
+/coverage.out
+/coverage.html
 
-# Tools
+# Profiling reports
+*.pprof
+
+# Database files
+*.db
+*.db-journal
+/data/
+
+# Node.js
+# -----------------------------------------------------------------------------
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# Generated assets
+/public/css
+/public/js
+
+# Tooling & Editor-specific
+# -----------------------------------------------------------------------------
 .air.toml
 .idea/
 .vscode/
+.history/
+
+# OS-specific
+# -----------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
