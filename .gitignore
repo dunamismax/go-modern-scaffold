@@ -1,0 +1,74 @@
+# -----------------------------------------------------------------------------
+# .gitignore for The Pure Go Standard Library Stack
+#
+# This file is organized into sections for clarity and maintainability.
+# It covers build artifacts, local configurations, and common OS/IDE files.
+# -----------------------------------------------------------------------------
+
+# --- Build Artifacts & Binaries ---
+# Compiled Go binaries and local build outputs.
+/bin/
+/build/
+
+# --- Local Configuration & Environment ---
+# Environment files contain sensitive credentials and should never be committed.
+# A `.env.example` file should be committed instead to define required variables.
+.env
+.env.*
+!.env.example
+
+# --- Local Database Files ---
+# The SQLite database file and its related journal/WAL files.
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# --- Development Tools & Logs ---
+# Log files.
+*.log
+
+# Go test coverage and profiling files.
+*.out
+*.prof
+*.test
+/coverage/
+
+# --- IDE & Editor Configuration ---
+# User-specific settings for common editors.
+
+# Visual Studio Code
+.vscode/
+
+# JetBrains (GoLand, IntelliJ)
+.idea/
+
+# Vim & Neovim
+*.swp
+*.swo
+*~
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# --- Operating System Files ---
+# Files generated automatically by different operating systems.
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+__MACOSX/
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.directory
