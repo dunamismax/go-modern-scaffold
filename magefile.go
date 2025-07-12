@@ -4,7 +4,7 @@ package main
 
 import (
 	"fmt"
-	os"
+	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
