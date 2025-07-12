@@ -258,7 +258,7 @@ func Clean() {
 // Deps installs all necessary development tools.
 func Deps() error {
 	fmt.Println("Installing dev dependencies...")
-	if err := goInstall("github.com/cosmtrek/air@latest"); err != nil {
+	if err := goInstall("github.com/air-verse/air@latest"); err != nil {
 		return err
 	}
 	if err := goInstall("github.com/a-h/templ/cmd/templ@latest"); err != nil {

@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="https://github.com/dunamismax/go-modern-scaffold/actions/workflows/ci.yml"><img src="https://github.com/dunamismax/go-modern-scaffold/actions/workflows/ci.yml/badge.svg" alt="Build Status"></a>
-  <a href="https://go.dev/"><img src="https://img.shields.io/badge/Go-1.22+-00ADD8.svg" alt="Go Version"></a>
+  <a href="https://go.dev/"><img src="https://img.shields.io/badge/Go-1.24.5-00ADD8.svg" alt="Go Version"></a>
   <a href="https://img.shields.io/github/license/dunamismax/go-modern-scaffold"><img src="https://img.shields.io/github/license/dunamismax/go-modern-scaffold" alt="License"></a>
   <a href="https://img.shields.io/github/repo-size/dunamismax/go-modern-scaffold"><img src="https://img.shields.io/github/repo-size/dunamismax/go-modern-scaffold" alt="Repo Size"></a>
   <a href="https://github.com/dunamismax/go-modern-scaffold/pulls"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome"></a>
