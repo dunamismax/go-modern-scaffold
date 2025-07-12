@@ -131,9 +131,6 @@ A modern toolchain using best-in-class tools to automate common tasks, ensure co
 - [**Air**](https://github.com/cosmtrek/air)
   - **Role:** Live Reloading for Development.
   - **Description:** A powerful command-line utility that watches for file changes in your project and automatically recompiles and restarts your application. Air provides a rapid, real-time feedback loop that is essential for productive web development.
-- [**GolangCI-Lint**](https://golangci-lint.run/)
-  - **Role:** Code Quality Linter Aggregator.
-  - **Description:** A fast, configurable linter that runs many Go linters in parallel. It analyzes source code for stylistic issues, bugs, and complexities, enforcing code quality and consistency across the entire project.
 - [**Prettier Tailwind CSS Plugin**](https://github.com/tailwindlabs/prettier-plugin-tailwindcss)
   - **Role:** Automatic Class Sorting.
   - **Description:** An official Prettier plugin that automatically sorts your Tailwind CSS classes in a consistent, logical order. This keeps your HTML clean and readable, significantly improving maintainability with zero manual effort.
