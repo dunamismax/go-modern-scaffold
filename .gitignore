@@ -9,6 +9,7 @@
 # Compiled Go binaries and local build outputs.
 /bin/
 /build/
+/tmp/
 
 # --- Local Configuration & Environment ---
 # Environment files contain sensitive credentials and should never be committed.
@@ -33,6 +34,13 @@
 *.prof
 *.test
 /coverage/
+
+# Node.js dependencies
+/node_modules/
+
+# --- Frontend Build Artifacts ---
+# Compiled CSS and other assets.
+/public/css/app.css
 
 # --- IDE & Editor Configuration ---
 # User-specific settings for common editors.

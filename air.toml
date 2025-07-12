@@ -1,0 +1,30 @@
+# .air.toml
+# Configuration for Air - a live-reloading utility for Go applications.
+# https://github.com/cosmtrek/air
+
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  # Command to build the application.
+  cmd = "mage build:server"
+  # Binary to run.
+  bin = "bin/server"
+  # Watch these directories for changes.
+  include_dir = ["cmd", "internal", "pkg"]
+  # Exclude these files from watching.
+  exclude_file = ["magefile.go", "tools.go"]
+  # Files to watch.
+  include_ext = ["go", "templ"]
+  # Don't watch these directories.
+  exclude_dir = ["tmp", "vendor", "node_modules", "public"]
+  # Log file for the build process.
+  log = "air_build.log"
+
+[log]
+  # Show log time.
+  time = true
+
+[misc]
+  # Delete tmp directory on exit.
+  clean_on_exit = true

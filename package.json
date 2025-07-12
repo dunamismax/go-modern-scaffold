@@ -1,0 +1,17 @@
+{
+  "name": "go-modern-scaffold",
+  "version": "1.0.0",
+  "description": "Modern web application scaffold with Go, Templ, Tailwind CSS, HTMX, and Alpine.js",
+  "scripts": {
+    "build:css": "tailwindcss -i ./internal/web/assets/css/app.css -o ./public/css/app.css --minify",
+    "dev:css": "tailwindcss -i ./internal/web/assets/css/app.css -o ./public/css/app.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.4",
+    "prettier": "^3.3.2"
+  },
+  "dependencies": {
+    "alpinejs": "^3.14.1",
+    "htmx.org": "^2.0.0"
+  }
+}
