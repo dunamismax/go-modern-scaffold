@@ -41,26 +41,26 @@ This stack is architected for developers aiming to build feature-rich, visually 
 This frontend architecture is designed for building modern, animated user experiences with maximum velocity. It combines a Go-native templating engine with a complete ecosystem for styling, component-building, and interactivity, enabling the rapid development of dynamic and polished interfaces.
 
 - [**Templ**](https://templ.guide/)
-    - **Role:** Type-Safe, Component-Based HTML Templating.
-    - **Description:** A modern templating language that generates Go code from your components, providing compile-time type safety for your HTML. It allows you to build encapsulated, reusable UI elements with pure Go logic, eliminating runtime errors common in string-based templates.
+  - **Role:** Type-Safe, Component-Based HTML Templating.
+  - **Description:** A modern templating language that generates Go code from your components, providing compile-time type safety for your HTML. It allows you to build encapsulated, reusable UI elements with pure Go logic, eliminating runtime errors common in string-based templates.
 - [**Tailwind CSS**](https://tailwindcss.com/docs/installation)
-    - **Role:** Utility-First CSS Framework.
-    - **Description:** Enables incredibly fast UI development by providing low-level utility classes that can be composed to build any design directly within your HTML. This removes the need for writing custom CSS and ensures a consistent, scalable styling system.
+  - **Role:** Utility-First CSS Framework.
+  - **Description:** Enables incredibly fast UI development by providing low-level utility classes that can be composed to build any design directly within your HTML. This removes the need for writing custom CSS and ensures a consistent, scalable styling system.
 - [**DaisyUI**](https://daisyui.com/)
-    - **Role:** Component Library for Tailwind CSS.
-    - **Description:** A plugin for Tailwind CSS that provides a rich set of pre-built, themeable components like buttons, cards, and modals. It drastically speeds up development by allowing you to use simple class names (e.g., `btn-primary`) instead of long strings of utilities.
+  - **Role:** Component Library for Tailwind CSS.
+  - **Description:** A plugin for Tailwind CSS that provides a rich set of pre-built, themeable components like buttons, cards, and modals. It drastically speeds up development by allowing you to use simple class names (e.g., `btn-primary`) instead of long strings of utilities.
 - [**HTMX**](https://htmx.org/docs/)
-    - **Role:** HTML-driven Interactivity.
-    - **Description:** Adds dynamic, AJAX-powered interactivity to your application with simple HTML attributes. It allows server-side rendered applications to feel as responsive as a single-page app (SPA) without writing complex JavaScript.
+  - **Role:** HTML-driven Interactivity.
+  - **Description:** Adds dynamic, AJAX-powered interactivity to your application with simple HTML attributes. It allows server-side rendered applications to feel as responsive as a single-page app (SPA) without writing complex JavaScript.
 - [**Hyperscript**](https://hyperscript.org/)
-    - **Role:** Expressive, Event-Driven Scripting.
-    - **Description:** A scripting language designed for modern web development that lives directly in your HTML. It uses an intuitive, English-like syntax to handle user events and DOM manipulations, making it a natural companion to HTMX for client-side interactivity.
+  - **Role:** Expressive, Event-Driven Scripting.
+  - **Description:** A scripting language designed for modern web development that lives directly in your HTML. It uses an intuitive, English-like syntax to handle user events and DOM manipulations, making it a natural companion to HTMX for client-side interactivity.
 - [**HTMX CSS Transitions**](https://htmx.org/examples/animation/)
-    - **Role:** Native, Lightweight Animations.
-    - **Description:** Leverage HTMX's built-in support for CSS transitions to create smooth animations between page states. By default, HTMX adds classes during its lifecycle, allowing you to easily apply fades, slides, and other effects with pure CSS.
+  - **Role:** Native, Lightweight Animations.
+  - **Description:** Leverage HTMX's built-in support for CSS transitions to create smooth animations between page states. By default, HTMX adds classes during its lifecycle, allowing you to easily apply fades, slides, and other effects with pure CSS.
 - [**Animate.css**](https://animate.style/)
-    - **Role:** Drop-in CSS Animation Library.
-    - **Description:** A library of ready-to-use, cross-browser CSS animations. It provides an extensive collection of effects that can be easily triggered by Hyperscript or HTMX events to add polish and visual feedback to your interface.
+  - **Role:** Drop-in CSS Animation Library.
+  - **Description:** A library of ready-to-use, cross-browser CSS animations. It provides an extensive collection of effects that can be easily triggered by Hyperscript or HTMX events to add polish and visual feedback to your interface.
 
 ---
 
@@ -69,17 +69,17 @@ This frontend architecture is designed for building modern, animated user experi
 This backend is built for developer productivity and robust performance, leveraging a high-speed web framework and best-in-class libraries for logging, configuration, and validation.
 
 - [**Fiber**](https://docs.gofiber.io/)
-    - **Role:** High-Performance Web Framework.
-    - **Description:** An Express.js-inspired web framework built on top of Fasthttp, Go's fastest HTTP engine. It is designed for high-performance and zero memory allocation, providing a developer-friendly API for building APIs and web services rapidly.
+  - **Role:** High-Performance Web Framework.
+  - **Description:** An Express.js-inspired web framework built on top of Fasthttp, Go's fastest HTTP engine. It is designed for high-performance and zero memory allocation, providing a developer-friendly API for building APIs and web services rapidly.
 - [**slog**](https://pkg.go.dev/log/slog)
-    - **Role:** Structured, Level-Based Logging.
-    - **Description:** The official structured logging package in Go's standard library. It enables the creation of machine-readable, key-value pair logs with severity levels, which is essential for effective parsing, filtering, and analysis in modern observability platforms.
+  - **Role:** Structured, Level-Based Logging.
+  - **Description:** The official structured logging package in Go's standard library. It enables the creation of machine-readable, key-value pair logs with severity levels, which is essential for effective parsing, filtering, and analysis in modern observability platforms.
 - [**Viper**](https://github.com/spf13/viper)
-    - **Role:** Complete Configuration Management.
-    - **Description:** A comprehensive configuration solution for Go applications. Viper can manage configuration from various sources—including YAML, JSON, and TOML files, environment variables, and remote key-value stores—unifying them into a single, accessible interface.
+  - **Role:** Complete Configuration Management.
+  - **Description:** A comprehensive configuration solution for Go applications. Viper can manage configuration from various sources—including YAML, JSON, and TOML files, environment variables, and remote key-value stores—unifying them into a single, accessible interface.
 - [**Validator**](https://pkg.go.dev/github.com/go-playground/validator/v10)
-    - **Role:** Struct-Tag Based Data Validation.
-    - **Description:** The de-facto standard for data validation in Go. It enables declarative validation on struct fields using simple tags (e.g., `validate:"required,email"`), integrating seamlessly with frameworks like Fiber to ensure data integrity.
+  - **Role:** Struct-Tag Based Data Validation.
+  - **Description:** The de-facto standard for data validation in Go. It enables declarative validation on struct fields using simple tags (e.g., `validate:"required,email"`), integrating seamlessly with frameworks like Fiber to ensure data integrity.
 
 ---
 
@@ -88,14 +88,14 @@ This backend is built for developer productivity and robust performance, leverag
 For building polished and modern command-line applications, the [**Charm Bracelet**](https://charm.sh/) ecosystem provides a complete and elegant solution.
 
 - [**Bubble Tea**](https://github.com/charmbracelet/bubbletea)
-    - **Role:** Stateful TUI Framework.
-    - **Description:** Brings The Elm Architecture (a functional, model-view-update pattern) to terminal applications, making it ideal for building complex, interactive, and stateful TUIs that are easy to reason about and maintain.
+  - **Role:** Stateful TUI Framework.
+  - **Description:** Brings The Elm Architecture (a functional, model-view-update pattern) to terminal applications, making it ideal for building complex, interactive, and stateful TUIs that are easy to reason about and maintain.
 - [**Bubbles**](https://github.com/charmbracelet/bubbles)
-    - **Role:** Reusable TUI Components.
-    - **Description:** A library of common, ready-to-use TUI components—such as spinners, text inputs, and tables—that are designed to work with Bubble Tea, dramatically accelerating the development of sophisticated interfaces.
+  - **Role:** Reusable TUI Components.
+  - **Description:** A library of common, ready-to-use TUI components—such as spinners, text inputs, and tables—that are designed to work with Bubble Tea, dramatically accelerating the development of sophisticated interfaces.
 - [**Lipgloss**](https://github.com/charmbracelet/lipgloss)
-    - **Role:** Declarative Terminal Styling.
-    - **Description:** Offers a fluent, expressive API for styling terminal text. It makes it simple to define colors, layouts, borders, and margins, enabling you to design beautiful and readable TUIs with ease.
+  - **Role:** Declarative Terminal Styling.
+  - **Description:** Offers a fluent, expressive API for styling terminal text. It makes it simple to define colors, layouts, borders, and margins, enabling you to design beautiful and readable TUIs with ease.
 
 ---
 
@@ -104,17 +104,17 @@ For building polished and modern command-line applications, the [**Charm Bracele
 This data layer is optimized for performance and maintainability by pairing direct SQL control with generated, type-safe Go code and a modern, declarative schema migration tool.
 
 - [**sqlc**](https://docs.sqlc.dev/)
-    - **Role:** Type-Safe SQL Code Generation.
-    - **Description:** Generates fully type-safe, idiomatic Go code from your SQL schema and queries. This allows you to write raw SQL for maximum control and performance while benefiting from compile-time safety, eliminating an entire class of runtime database errors.
+  - **Role:** Type-Safe SQL Code Generation.
+  - **Description:** Generates fully type-safe, idiomatic Go code from your SQL schema and queries. This allows you to write raw SQL for maximum control and performance while benefiting from compile-time safety, eliminating an entire class of runtime database errors.
 - [**Atlas**](https://atlasgo.io/)
-    - **Role:** Database Schema Migrations.
-    - **Description:** A modern, language-agnostic tool for managing and migrating database schemas. Atlas can automatically generate migration plans by comparing the desired schema (defined in HCL, SQL, or ORM) to the database's current state, streamlining schema evolution with a declarative workflow.
+  - **Role:** Database Schema Migrations.
+  - **Description:** A modern, language-agnostic tool for managing and migrating database schemas. Atlas can automatically generate migration plans by comparing the desired schema (defined in HCL, SQL, or ORM) to the database's current state, streamlining schema evolution with a declarative workflow.
 - [**Ristretto**](https://github.com/dgraph-io/ristretto)
-    - **Role:** High-Performance In-Process Cache.
-    - **Description:** A fast, concurrent, and memory-bounded in-process cache from Dgraph. It is designed to achieve high hit ratios with low memory overhead, making it an excellent choice for performance-critical caching within a single application instance.
+  - **Role:** High-Performance In-Process Cache.
+  - **Description:** A fast, concurrent, and memory-bounded in-process cache from Dgraph. It is designed to achieve high hit ratios with low memory overhead, making it an excellent choice for performance-critical caching within a single application instance.
 - [**go-redis**](https://redis.io/docs/clients/go/)
-    - **Role:** Redis Client for Distributed Caching.
-    - **Description:** The premier Go client for Redis, providing a high-performance interface for all Redis features. It is essential for implementing a distributed cache, which is critical for scaling applications that require shared state or session management.
+  - **Role:** Redis Client for Distributed Caching.
+  - **Description:** The premier Go client for Redis, providing a high-performance interface for all Redis features. It is essential for implementing a distributed cache, which is critical for scaling applications that require shared state or session management.
 
 ---
 
@@ -123,17 +123,17 @@ This data layer is optimized for performance and maintainability by pairing dire
 A modern toolchain using best-in-class tools to automate common tasks, ensure code quality, and maintain a fast and efficient developer feedback loop.
 
 - [**Mage**](https://magefile.org/)
-    - **Role:** Task Runner / Build System.
-    - **Description:** An elegant, Make-like tool that allows you to define build tasks (like compiling, testing, or linting) as simple Go functions within a `magefile.go`. This provides a clean, cross-platform, and idiomatic way to automate your project's workflow.
+  - **Role:** Task Runner / Build System.
+  - **Description:** An elegant, Make-like tool that allows you to define build tasks (like compiling, testing, or linting) as simple Go functions within a `magefile.go`. This provides a clean, cross-platform, and idiomatic way to automate your project's workflow.
 - [**Air**](https://github.com/cosmtrek/air)
-    - **Role:** Live Reloading for Development.
-    - **Description:** A powerful command-line utility that watches for file changes in your project and automatically recompiles and restarts your application. Air provides a rapid, real-time feedback loop that is essential for productive web development.
+  - **Role:** Live Reloading for Development.
+  - **Description:** A powerful command-line utility that watches for file changes in your project and automatically recompiles and restarts your application. Air provides a rapid, real-time feedback loop that is essential for productive web development.
 - [**GolangCI-Lint**](https://golangci-lint.run/)
-    - **Role:** Code Quality Linter Aggregator.
-    - **Description:** A fast, configurable linter that runs many Go linters in parallel. It analyzes source code for stylistic issues, bugs, and complexities, enforcing code quality and consistency across the entire project.
+  - **Role:** Code Quality Linter Aggregator.
+  - **Description:** A fast, configurable linter that runs many Go linters in parallel. It analyzes source code for stylistic issues, bugs, and complexities, enforcing code quality and consistency across the entire project.
 - [**Prettier Tailwind CSS Plugin**](https://github.com/tailwindlabs/prettier-plugin-tailwindcss)
-    - **Role:** Automatic Class Sorting.
-    - **Description:** An official Prettier plugin that automatically sorts your Tailwind CSS classes in a consistent, logical order. This keeps your HTML clean and readable, significantly improving maintainability with zero manual effort.
+  - **Role:** Automatic Class Sorting.
+  - **Description:** An official Prettier plugin that automatically sorts your Tailwind CSS classes in a consistent, logical order. This keeps your HTML clean and readable, significantly improving maintainability with zero manual effort.
 
 ---
 
@@ -142,8 +142,8 @@ A modern toolchain using best-in-class tools to automate common tasks, ensure co
 This stack relies exclusively on Go's powerful, built-in testing framework to ensure code quality and correctness without external dependencies.
 
 - [**Go `testing` Package**](https://pkg.go.dev/testing)
-    - **Role:** Core Testing Framework.
-    - **Description:** Go's standard library for writing unit, integration, and benchmark tests. Assertions are handled with simple `if` statements and `t.Errorf`, which keeps tests explicit, clear, and easy to maintain while avoiding third-party dependencies.
+  - **Role:** Core Testing Framework.
+  - **Description:** Go's standard library for writing unit, integration, and benchmark tests. Assertions are handled with simple `if` statements and `t.Errorf`, which keeps tests explicit, clear, and easy to maintain while avoiding third-party dependencies.
 
 </details>
 
