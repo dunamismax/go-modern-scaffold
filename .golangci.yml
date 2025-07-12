@@ -6,22 +6,11 @@ run:
 linters:
   enable-all: true
   disable:
-    - exhaustivestruct
-    - golint
-    - interfacer
-    - maligned
-    - scopelint
-    - structcheck
-    - varcheck
-    - deadcode
-    - ifshort
-    - nosnakecase
     - nonamedreturns
     - exhaustruct
     - gochecknoinits
     - gochecknoglobals
     - testpackage
-    - breqn
     - ireturn
     - ineffassign
     - staticcheck
@@ -29,11 +18,9 @@ linters:
 
 linters-settings:
   govet:
-    check-shadowing: true
+    shadow: true
   gocyclo:
     min-complexity: 15
-  maligned:
-    suggest-new: true
   dupl:
     threshold: 100
   goconst:
